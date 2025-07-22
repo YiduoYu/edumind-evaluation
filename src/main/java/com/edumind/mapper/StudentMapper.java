@@ -9,4 +9,7 @@ import java.util.List;
 public interface StudentMapper {
     Student selectStudentById(Long id);
     List<Student> selectAllStudents();
+
+    Student selectStudentByEmail(String email);
+    int insertStudent(Student student);
 }

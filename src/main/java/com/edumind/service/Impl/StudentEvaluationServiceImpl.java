@@ -1,9 +1,12 @@
 package com.edumind.service.Impl;
 
+import com.edumind.domain.Student;
 import com.edumind.domain.StudentEvaluation;
 import com.edumind.mapper.StudentEvaluationMapper;
 //import com.edumind.util.AIAnalysisUtil;
+import com.edumind.mapper.StudentMapper;
 import com.edumind.service.IStudentEvaluationService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +18,19 @@ public class StudentEvaluationServiceImpl implements IStudentEvaluationService {
 
     @Autowired
     private StudentEvaluationMapper evaluationMapper;
+    private StudentMapper studentMapper;
 
     @Override
     public void submitEvaluation(StudentEvaluation evaluation) {
+
+        //studentID合法性检查
+        Student student = studentMapper.selectStudentById(evaluation.getStudentId());
+        if (student == null) {
+            throw new RuntimeException("学生ID无效，不存在该学生");
+        }
+        //2. 时间戳补充
+        evaluation.setCreateTime(LocalDateTime.now());
+
         //1. 调用 AI 进行分析
 //        var analysisResult = AIAnalysisUtil.analyzeSentiment(evaluation.getContent());
 //
@@ -44,7 +57,8 @@ public class StudentEvaluationServiceImpl implements IStudentEvaluationService {
     }
 
     @Override
-    public List<StudentEvaluation> getAllEvaluations(Long studentId) {
+    public List<StudentEvaluation> getAllEvaluations(Long studentId, int page, int size) {
+        PageHelper.startPage(page, size); // 启用分页
         return evaluationMapper.selectAllEvaluations(studentId);
     }
 }
