@@ -1,8 +1,10 @@
 package com.edumind.controller;
 
+import com.edumind.common.AjaxResult;
 import com.edumind.domain.StudentEvaluation;
 import com.edumind.service.IStudentEvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,9 +20,9 @@ public class StudentEvaluationController {
      * 提交学生自我评价（由学生端调用）
      */
     @PostMapping("/submit")
-    public String submitEvaluation(@RequestBody StudentEvaluation evaluation) {
+    public AjaxResult submitEvaluation(@Validated  @RequestBody StudentEvaluation evaluation) {
         evaluationService.submitEvaluation(evaluation);
-        return "提交成功";
+        return AjaxResult.success("提交成功");
     }
 
     /**
@@ -37,7 +39,9 @@ public class StudentEvaluationController {
      * 获取某个学生的全部评价（可用于心理状态分析）
      */
     @GetMapping("/all/{studentId}")
-    public List<StudentEvaluation> getAllEvaluations(@PathVariable Long studentId) {
-        return evaluationService.getAllEvaluations(studentId);
+    public AjaxResult getAllEvaluations(@PathVariable Long studentId, @RequestParam(defaultValue = "1") int page,
+                                        @RequestParam(defaultValue = "10") int size) {
+        List<StudentEvaluation> evaluations = evaluationService.getAllEvaluations(studentId, page, size);
+        return AjaxResult.success(evaluations);
     }
 }

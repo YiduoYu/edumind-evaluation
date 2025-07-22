@@ -14,5 +14,5 @@ public interface IStudentEvaluationService {
     List<StudentEvaluation> getRecentEvaluations(Long studentId, int limit);
 
     // 获取某学生的所有历史评价
-    List<StudentEvaluation> getAllEvaluations(Long studentId);
+    List<StudentEvaluation> getAllEvaluations(Long studentId, int page, int size);
 }

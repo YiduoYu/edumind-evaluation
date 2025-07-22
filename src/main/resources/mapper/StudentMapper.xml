@@ -12,4 +12,13 @@
         SELECT * FROM student
     </select>
 
+    <select id="selectStudentByEmail" resultType="com.edumind.domain.Student">
+        SELECT * FROM student WHERE email = #{email}
+    </select>
+
+    <insert id="insertStudent" parameterType="com.edumind.domain.Student">
+        INSERT INTO student (name, age, email, create_time)
+        VALUES (#{name}, #{age}, #{email}, #{createTime})
+    </insert>
+
 </mapper>

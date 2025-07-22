@@ -8,4 +8,6 @@ import java.util.List;
 public interface IStudentService {
     Student getStudentById(Long id);
     List<Student> getAllStudents();
+
+    int batchInsertStudents(List<Student> students);
 }
