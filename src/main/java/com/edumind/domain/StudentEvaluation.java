@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class StudentEvaluation {
 
-    private Long id;                    // 评价ID（数据库主键）
+    private Long id;// 评价ID（数据库主键）
 
     public Long getId() {
         return id;
