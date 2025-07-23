@@ -1,6 +1,5 @@
 package com.edumind.common;
 
-
 import lombok.Data;
 
 @Data
