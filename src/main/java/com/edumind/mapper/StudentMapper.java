@@ -11,5 +11,5 @@ public interface StudentMapper {
     List<Student> selectAllStudents();
 
     Student selectStudentByEmail(String email);
-    int insertStudent(Student student);
+    void insertStudent(Student student);
 }

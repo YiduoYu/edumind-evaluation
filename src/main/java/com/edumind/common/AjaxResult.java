@@ -11,7 +11,7 @@ public class AjaxResult {
     public static AjaxResult success(Object data) {
         AjaxResult result = new AjaxResult();
         result.setSuccess(true);
-        result.setMessage("操作成功");
+        result.setMessage("Operation successful");
         result.setData(data);
         return result;
     }

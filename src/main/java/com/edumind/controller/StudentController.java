@@ -37,7 +37,7 @@ public class StudentController {
                     .doReadSync();
 
             int count = studentService.batchInsertStudents(students);
-            return AjaxResult.success("成功导入 " + count + " 条学生数据");
+            return AjaxResult.success("Successfully imported " + count + " Student data(s)");
         } catch (Exception e) {
             return AjaxResult.error("导入失败：" + e.getMessage());
         }

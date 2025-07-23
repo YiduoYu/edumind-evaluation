@@ -22,7 +22,7 @@ public class StudentEvaluationController {
     @PostMapping("/submit")
     public AjaxResult submitEvaluation(@Validated  @RequestBody StudentEvaluation evaluation) {
         evaluationService.submitEvaluation(evaluation);
-        return AjaxResult.success("提交成功");
+        return AjaxResult.success("Submit successfully");
     }
 
     /**
