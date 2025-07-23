@@ -7,6 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EduMindApplication {
     public static void main(String[] args) {
         SpringApplication.run(EduMindApplication.class, args);
-        System.out.println("Congrats😄! EduMind 后端系统启动成功！");
+        System.out.println("Congrats😄! EduMind backend system has started successfully!");
     }
 }

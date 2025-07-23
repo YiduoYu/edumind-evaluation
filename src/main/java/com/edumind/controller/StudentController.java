@@ -1,6 +1,5 @@
 package com.edumind.controller;
 
-
 import com.alibaba.excel.EasyExcel;
 import com.edumind.common.AjaxResult;
 import com.edumind.domain.Student;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-
 
 //教师端查看学生
 @RestController

@@ -1,4 +1,5 @@
-package com.edumind.dto;
+package com.edumind.util;
 
 public class EvaluationRequest {
+
 }

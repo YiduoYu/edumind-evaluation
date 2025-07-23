@@ -1,9 +1,10 @@
 package com.edumind.service.Impl;
 
+import com.edumind.config.BaiduNlpService;
+import com.edumind.domain.SentimentResult;
 import com.edumind.domain.Student;
 import com.edumind.domain.StudentEvaluation;
 import com.edumind.mapper.StudentEvaluationMapper;
-//import com.edumind.util.AIAnalysisUtil;
 import com.edumind.mapper.StudentMapper;
 import com.edumind.service.IStudentEvaluationService;
 import com.github.pagehelper.PageHelper;
@@ -18,7 +19,12 @@ public class StudentEvaluationServiceImpl implements IStudentEvaluationService {
 
     @Autowired
     private StudentEvaluationMapper evaluationMapper;
+
+    @Autowired
     private StudentMapper studentMapper;
+
+    @Autowired
+    private BaiduNlpService baiduNlpService;
 
     @Override
     public void submitEvaluation(StudentEvaluation evaluation) {
@@ -32,21 +38,20 @@ public class StudentEvaluationServiceImpl implements IStudentEvaluationService {
         evaluation.setCreateTime(LocalDateTime.now());
 
         //1. 调用 AI 进行分析
-//        var analysisResult = AIAnalysisUtil.analyzeSentiment(evaluation.getContent());
-//
-//        evaluation.setSentiment(analysisResult.getSentiment());
-//        evaluation.setSentimentScore(analysisResult.getScore());
+        SentimentResult analysisResult = BaiduNlpService.analyzeSentiment(evaluation.getContent());
+        evaluation.setSentiment(analysisResult.getSentiment());
+        evaluation.setSentimentScore(analysisResult.getScore());
         evaluation.setCreateTime(LocalDateTime.now());
 
-//        // 2. 判断是否连续两次为负面情绪
-//        List<StudentEvaluation> recent = evaluationMapper.selectRecentEvaluations(evaluation.getStudentId(), 1);
-//        boolean lastNegative = recent.stream().anyMatch(e -> "negative".equalsIgnoreCase(e.getSentiment()));
-//        boolean currentNegative = "negative".equalsIgnoreCase(evaluation.getSentiment());
-//
-//        evaluation.setWarningTriggered(lastNegative && currentNegative);
+        // 2. 判断是否连续两次为负面情绪
+        List<StudentEvaluation> recent = evaluationMapper.selectRecentEvaluations(evaluation.getStudentId(), 1);
+        boolean lastNegative = recent.stream().anyMatch(e -> "negative".equalsIgnoreCase(e.getSentiment()));
+        boolean currentNegative = "negative".equalsIgnoreCase(evaluation.getSentiment());
+
+        evaluation.setWarningTriggered(lastNegative && currentNegative);
 
         // 3. 入库
-       evaluationMapper.insertEvaluation(evaluation);
+        evaluationMapper.insertEvaluation(evaluation);
 
         // 4. 可扩展：如果触发预警，发邮件/通知教授（后续实现）
     }

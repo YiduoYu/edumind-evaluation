@@ -39,7 +39,8 @@ public class StudentEvaluationController {
      * 获取某个学生的全部评价（可用于心理状态分析）
      */
     @GetMapping("/all/{studentId}")
-    public AjaxResult getAllEvaluations(@PathVariable Long studentId, @RequestParam(defaultValue = "1") int page,
+    public AjaxResult getAllEvaluations(@PathVariable Long studentId,
+                                        @RequestParam(defaultValue = "1") int page,
                                         @RequestParam(defaultValue = "10") int size) {
         List<StudentEvaluation> evaluations = evaluationService.getAllEvaluations(studentId, page, size);
         return AjaxResult.success(evaluations);
