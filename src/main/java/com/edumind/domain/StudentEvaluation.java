@@ -5,10 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import javax.validation.constraints.Min;
+
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
-
 
 @Setter
 @Getter
@@ -17,12 +17,12 @@ public class StudentEvaluation {
 
     private Long id;// 评价ID（数据库主键）
 
-    @Min(value = 1, message = "学生ID必须为正整数")
-    @NotNull(message = "学生ID不能为空")
-    private Long studentId;// 学生ID
+    @Pattern(regexp = "^\\d{7}$", message = "Student ID must be a 7-digit positive integer")
+    @NotNull(message = "Student ID cannot be empty")
+    private String studentId;// 学生ID
 
-    @NotNull(message = "评价内容不能为空")
-    @Size(min = 20, max = 5000, message = "评价内容长度需在20～5000之间")
+    @NotNull(message = "The review content cannot be empty")
+    @Size(min = 20, max = 5000, message = "The length of the evaluation content must be between 20 and 5000 words")
     private String content;             // 自我评价内容
     private String sentiment;           // 情绪标签（positive / negative / neutral）
     private double sentimentScore;      // 情感强度分数（例如 -1 ~ 1）
@@ -31,4 +31,3 @@ public class StudentEvaluation {
     private LocalDateTime createTime;   // 提交时间
 
 }
-

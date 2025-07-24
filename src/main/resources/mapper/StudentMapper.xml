@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.edumind.mapper.StudentMapper">
 
-    <select id="selectStudentById" parameterType="long" resultType="com.edumind.domain.Student">
-        SELECT * FROM student WHERE id = #{id}
+    <select id="selectStudentByStudentId" parameterType="string" resultType="com.edumind.domain.Student">
+        SELECT * FROM student
+        WHERE student_id = #{{studentId}
+    </select>
+
+    <select id="selectStudentByEmail" parameterType="string" resultType="com.edumind.domain.Student">
+        SELECT * FROM student
+        WHERE email = #{email}
     </select>
 
     <select id="selectAllStudents" resultType="com.edumind.domain.Student">
         SELECT * FROM student
     </select>
 
-    <select id="selectStudentByEmail" resultType="com.edumind.domain.Student">
-        SELECT * FROM student WHERE email = #{email}
-    </select>
-
     <insert id="insertStudent" parameterType="com.edumind.domain.Student">
-        INSERT INTO student (name, age, email, create_time)
-        VALUES (#{name}, #{age}, #{email}, #{createTime})
+        INSERT INTO student (student_id, name, age, email, advisor, create_time)
+        VALUES (#{studentId}, #{name}, #{age}, #{email}, #{advisor}, #{createTime})
     </insert>
 
 </mapper>

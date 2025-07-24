@@ -11,7 +11,13 @@ public interface StudentEvaluationMapper {
 
     int insertEvaluation(StudentEvaluation evaluation);
 
-    List<StudentEvaluation> selectRecentEvaluations(@Param("studentId") Long studentId, @Param("limit") int limit);
+    List<StudentEvaluation> selectRecentEvaluations(@Param("studentId") String studentId,
+                                                    @Param("limit") int limit);
 
-    List<StudentEvaluation> selectAllEvaluations(Long studentId);
+    List<StudentEvaluation> selectAllEvaluations(@Param("studentId") String studentId);
+
+    List<StudentEvaluation> selectByContentAndStudent(@Param("studentId") String studentId,
+                                                      @Param("content") String content);
+
+    List<StudentEvaluation> selectTodayByStudent(@Param("studentId") String studentId);
 }

@@ -30,12 +30,26 @@ public class StudentEvaluationServiceImpl implements IStudentEvaluationService {
     public void submitEvaluation(StudentEvaluation evaluation) {
 
         //studentID合法性检查
-        Student student = studentMapper.selectStudentById(evaluation.getStudentId());
+        Student student = studentMapper.selectStudentByStudentId(evaluation.getStudentId());
         if (student == null) {
-            throw new RuntimeException("学生ID无效，不存在该学生");
+            throw new RuntimeException("Invalid Student ID, the student does not exist");
+        }
+
+
+        //每日每个学生只能提交一次
+        List<StudentEvaluation> todaySubmissions = evaluationMapper.selectTodayByStudent(evaluation.getStudentId());
+        if(!todaySubmissions.isEmpty()){
+            throw new RuntimeException("You can only submit one review per day");
+        }
+
+        //判断是否为重复提交内容
+        List<StudentEvaluation> sameContent = evaluationMapper.selectByContentAndStudent(evaluation.getStudentId(),evaluation.getContent());
+        if(!sameContent.isEmpty()){
+            throw new RuntimeException("Please don't submit the same content of review repeatedly");
         }
         //2. 时间戳补充
         evaluation.setCreateTime(LocalDateTime.now());
+
 
         //1. 调用 AI 进行分析
         SentimentResult analysisResult = BaiduNlpService.analyzeSentiment(evaluation.getContent());
@@ -56,13 +70,14 @@ public class StudentEvaluationServiceImpl implements IStudentEvaluationService {
         // 4. 可扩展：如果触发预警，发邮件/通知教授（后续实现）
     }
 
+
     @Override
-    public List<StudentEvaluation> getRecentEvaluations(Long studentId, int limit) {
+    public List<StudentEvaluation> getRecentEvaluations(String studentId, int limit) {
         return evaluationMapper.selectRecentEvaluations(studentId, limit);
     }
 
     @Override
-    public List<StudentEvaluation> getAllEvaluations(Long studentId, int page, int size) {
+    public List<StudentEvaluation> getAllEvaluations(String studentId, int page, int size) {
         PageHelper.startPage(page, size); // 启用分页
         return evaluationMapper.selectAllEvaluations(studentId);
     }
