@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 //教师端查看学生
@@ -19,17 +20,19 @@ public class StudentController {
     private IStudentService studentService;
 
     @GetMapping("/{id}")
-    public Student getStudent(@PathVariable Long id) {
-        return studentService.getStudentById(id);
+    public AjaxResult getStudent(@PathVariable String id) {
+        Student student = studentService.getStudentById(id);
+        return AjaxResult.success(student);
     }
 
     @GetMapping("/all")
-    public List<Student> getAllStudents() {
-        return studentService.getAllStudents();
+    public AjaxResult getAllStudents() {
+        List<Student> list = studentService.getAllStudents();
+        return AjaxResult.success(list);
     }
 
     @PostMapping("/import")
-    public AjaxResult importStudents(@RequestParam("file") MultipartFile file) {
+    public AjaxResult importStudents(@RequestParam ("file") MultipartFile file) {
         try {
             List<Student> students = EasyExcel.read(file.getInputStream())
                     .head(Student.class)
@@ -39,7 +42,7 @@ public class StudentController {
             int count = studentService.batchInsertStudents(students);
             return AjaxResult.success("Successfully imported " + count + " Student data(s)");
         } catch (Exception e) {
-            return AjaxResult.error("导入失败：" + e.getMessage());
+            return AjaxResult.error("Import failed: " + e.getMessage());
         }
     }
 }

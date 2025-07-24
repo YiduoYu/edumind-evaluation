@@ -6,21 +6,39 @@
 <mapper namespace="com.edumind.mapper.StudentEvaluationMapper">
 
     <insert id="insertEvaluation" parameterType="com.edumind.domain.StudentEvaluation">
-        INSERT INTO student_evaluation (student_id, content, sentiment, sentiment_score, warning_triggered, create_time)
-        VALUES (#{studentId}, #{content}, #{sentiment}, #{sentimentScore}, #{warningTriggered}, #{createTime})
+        INSERT INTO student_evaluation
+        (student_id, content, sentiment, sentiment_score, warning_triggered, create_time)
+        VALUES
+            (#{studentId}, #{content}, #{sentiment}, #{sentimentScore}, #{warningTriggered}, #{createTime})
     </insert>
 
     <select id="selectRecentEvaluations" resultType="com.edumind.domain.StudentEvaluation">
-        SELECT * FROM student_evaluation
+        SELECT *
+        FROM student_evaluation
         WHERE student_id = #{studentId}
         ORDER BY create_time DESC
             LIMIT #{limit}
     </select>
 
     <select id="selectAllEvaluations" resultType="com.edumind.domain.StudentEvaluation">
-        SELECT * FROM student_evaluation
+        SELECT *
+        FROM student_evaluation
         WHERE student_id = #{studentId}
         ORDER BY create_time DESC
+    </select>
+
+    <select id="selectByContentAndStudent" resultType="com.edumind.domain.StudentEvaluation">
+        SELECT *
+        FROM student_evaluation
+        WHERE student_id = #{studentId}
+          AND content = #{content}
+    </select>
+
+    <select id="selectTodayByStudent" resultType="com.edumind.domain.StudentEvaluation">
+        SELECT *
+        FROM student_evaluation
+        WHERE student_id = #{studentId}
+          AND DATE(create_time) = CURDATE()
     </select>
 
 </mapper>

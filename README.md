@@ -14,23 +14,9 @@ EduMind 是一个基于 Spring Boot 构建的后端服务系统，旨在通过�
 
 ---
 
-##  当前进度（截至 2025/07/22）
+##  下一步目标
 
-- [x] 项目基础框架构建完成（Spring Boot）
-- [x] 接口开发：
-  - [x] `/api/evaluation/submit` 学生提交评价
-  - [x] `/api/evaluation/recent/{studentId}` 查看学生近期评价
-  - [x] `/api/student/all` 教师端查看全部学生
-- [x] MyBatis 接入数据库，支持查询与插入
-- [x] 数据库建表成功，支持外键关联（`student_id`）
-- [x] 使用 Apifox 成功调用接口并写入数据库
-- [ ] AI 情绪分析模块尚未启用（占位已留）
-
----
-
-## 🧭 下一步目标
-
-### ✅ 技术开发方向
+### 技术开发方向
 
 1. **集成 AI 情感分析模块**（例如百度 NLP / ChatGPT 接口）：
    - 根据 `evaluation.content` 生成 `sentiment`（positive/negative）+ `sentimentScore`
@@ -46,17 +32,16 @@ EduMind 是一个基于 Spring Boot 构建的后端服务系统，旨在通过�
 
 ---
 
-## 🧑‍💻 开发环境
+## 开发环境
 
-- JDK 1.8（Amazon Corretto）
-- Spring Boot 2.5+
-- MySQL 8.x
-- MyBatis 3.x
+- JDK: 1.8（Amazon Corretto）
+- Spring Boot: 2.7
+- MySQL: 9.3.0
+- MyBatis: 2.2
 - Apifox（API 测试工具）
 - IDE: IntelliJ IDEA
 
 ---
 
-## 📢 备注
-
-该项目为个人实习与科研项目的一部分，欢迎后续扩展为心理测评系统，集成多维情绪标签与学业成绩联动分析。
+## 备注
+后续扩展为心理测评系统，集成多维情绪标签与学业成绩联动分析。

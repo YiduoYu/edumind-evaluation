@@ -20,7 +20,7 @@ public class StudentEvaluationController {
      * 提交学生自我评价（由学生端调用）
      */
     @PostMapping("/submit")
-    public AjaxResult submitEvaluation(@Validated  @RequestBody StudentEvaluation evaluation) {
+    public AjaxResult submitEvaluation(@RequestBody @Validated StudentEvaluation evaluation) {
         evaluationService.submitEvaluation(evaluation);
         return AjaxResult.success("Submit successfully");
     }
@@ -29,17 +29,18 @@ public class StudentEvaluationController {
      * 获取某个学生的最近 N 条评价（供教师查看）
      */
     @GetMapping("/recent/{studentId}")
-    public List<StudentEvaluation> getRecentEvaluations(
-            @PathVariable Long studentId,
+    public AjaxResult getRecentEvaluations(
+            @PathVariable String studentId,
             @RequestParam(defaultValue = "5") int limit) {
-        return evaluationService.getRecentEvaluations(studentId, limit);
+        List<StudentEvaluation> list = evaluationService.getRecentEvaluations(studentId,limit);
+        return AjaxResult.success(list);
     }
 
     /**
      * 获取某个学生的全部评价（可用于心理状态分析）
      */
     @GetMapping("/all/{studentId}")
-    public AjaxResult getAllEvaluations(@PathVariable Long studentId,
+    public AjaxResult getAllEvaluations(@PathVariable String studentId,
                                         @RequestParam(defaultValue = "1") int page,
                                         @RequestParam(defaultValue = "10") int size) {
         List<StudentEvaluation> evaluations = evaluationService.getAllEvaluations(studentId, page, size);
