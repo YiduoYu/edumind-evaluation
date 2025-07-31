@@ -7,6 +7,7 @@ import com.edumind.domain.StudentEvaluation;
 import com.edumind.mapper.StudentEvaluationMapper;
 import com.edumind.mapper.StudentMapper;
 import com.edumind.service.IStudentEvaluationService;
+import com.edumind.util.EvaluationTrendPoint;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,6 @@ public class StudentEvaluationServiceImpl implements IStudentEvaluationService {
             throw new RuntimeException("Invalid Student ID, the student does not exist");
         }
 
-
         //每日每个学生只能提交一次
         List<StudentEvaluation> todaySubmissions = evaluationMapper.selectTodayByStudent(evaluation.getStudentId());
         if(!todaySubmissions.isEmpty()){
@@ -47,6 +47,7 @@ public class StudentEvaluationServiceImpl implements IStudentEvaluationService {
         if(!sameContent.isEmpty()){
             throw new RuntimeException("Please don't submit the same content of review repeatedly");
         }
+
         //2. 时间戳补充
         evaluation.setCreateTime(LocalDateTime.now());
 
@@ -80,5 +81,16 @@ public class StudentEvaluationServiceImpl implements IStudentEvaluationService {
     public List<StudentEvaluation> getAllEvaluations(String studentId, int page, int size) {
         PageHelper.startPage(page, size); // 启用分页
         return evaluationMapper.selectAllEvaluations(studentId);
+    }
+
+    @Override
+    public List<StudentEvaluation> getWarnings(int page, int size) {
+        PageHelper.startPage(page, size);
+        return evaluationMapper.selectWarnings();
+    }
+
+    @Override
+    public List<EvaluationTrendPoint> getTrendPoints(String studentId) {
+        return evaluationMapper.selectTrendPointsByStudent(studentId);
     }
 }

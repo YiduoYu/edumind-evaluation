@@ -3,6 +3,7 @@ package com.edumind.controller;
 import com.edumind.common.AjaxResult;
 import com.edumind.domain.StudentEvaluation;
 import com.edumind.service.IStudentEvaluationService;
+import com.edumind.util.EvaluationTrendPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/evaluation")
 public class StudentEvaluationController {
+
 
     @Autowired
     private IStudentEvaluationService evaluationService;
@@ -46,4 +48,21 @@ public class StudentEvaluationController {
         List<StudentEvaluation> evaluations = evaluationService.getAllEvaluations(studentId, page, size);
         return AjaxResult.success(evaluations);
     }
+
+    //查询所有预警记录
+    @GetMapping("/warnings")
+    public AjaxResult getWarningEvaluations(
+            @RequestParam(defaultValue = " 1 ") int page,
+            @RequestParam(defaultValue = "10") int size){
+        List<StudentEvaluation> warnings = evaluationService.getWarnings(page, size);
+        return AjaxResult.success(warnings);
+    }
+
+    //查询某个学生的全部评价情绪分数（用于画图）
+    @GetMapping("/trend/{studentId}")
+    public AjaxResult getTrendByStudent(@PathVariable String studentId){
+        List<EvaluationTrendPoint> trend = evaluationService.getTrendPoints(studentId);
+        return AjaxResult.success(trend);
+    }
+
 }

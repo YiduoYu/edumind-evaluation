@@ -1,42 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
+<html>
+<head>
     <meta charset="UTF-8">
-    <script src="echarts.js"></script>
-  </head>
+    <title>Sentiment Trend Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+</head>
+<body>
+<div id="chart" style="width: 800px; height: 400px;"></div>
 
-  <body>
-     <div id="main"></div>
-     <script type = "text/javascript">
-         // 基于准备好的dom，初始化echarts实例
-         var myChart = echarts.init(document.getElementById('main'),null,{
-             width: 600,
-             height: 400
-         });
+<script>
+    fetch("http://localhost:8080/api/evaluation/trend/1234567")
+        .then(response => response.json())
+        .then(result => {
+            if (!result.success) {
+                console.error("The backend returns an error message:", result.message);
+                return;
+            }
 
-         // 指定图表的配置项和数据
-         var option = {
-             title: {
-                 text: 'Negative emotion chart for students'
-             },
-             tooltip: {},
-             legend: {
-                 data: ['Negative emotions']
-             },
-             xAxis: {
-                 data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
-             },
-             yAxis: {},
-             series: [
-                 {
-                     name: 'Negative emotions',
-                     type: 'bar',
-                     data: [5, 20, 36, 10, 10, 20]
-                 }
-             ]
-         };
-         // 使用刚指定的配置项和数据显示图表。
-         myChart.setOption(option);
-     </script>
-  </body>
+            const trendData = result.data || [];
+            console.log("Returned data：", trendData);
+
+            const dates = trendData.map(item => item.date);
+            const scores = trendData.map(item => item.sentimentScore);
+
+            const chart = echarts.init(document.getElementById('chart'));
+            const option = {
+                title: {
+                    text: 'Trends in student emotions'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: dates,
+                    name: 'date'
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'sentiment score'
+                },
+                series: [
+                    {
+                        data: scores,
+                        type: 'line',
+                        smooth: true,
+                        name: 'sentiment score'
+                    }
+                ]
+            };
+
+            chart.setOption(option);
+        })
+        .catch(error => {
+            console.error("Request failed:", error);
+        });
+</script>
+</body>
 </html>
