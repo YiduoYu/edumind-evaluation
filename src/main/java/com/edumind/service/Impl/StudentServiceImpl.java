@@ -25,7 +25,6 @@ public class StudentServiceImpl implements IStudentService {
         return studentMapper.selectStudentByStudentId(id);
     }
 
-
     @Override
     public List<Student> getAllStudents() {
         return studentMapper.selectAllStudents();

@@ -24,8 +24,11 @@ public class StudentEvaluation {
     @NotNull(message = "The review content cannot be empty")
     @Size(min = 20, max = 5000, message = "The length of the evaluation content must be between 20 and 5000 words")
     private String content;             // 自我评价内容
+
     private String sentiment;           // 情绪标签（positive / negative / neutral）
+
     private double sentimentScore;      // 情感强度分数（例如 -1 ~ 1）
+
     private boolean warningTriggered;   // 是否触发心理健康预警
 
     private LocalDateTime createTime;   // 提交时间
