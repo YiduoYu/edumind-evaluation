@@ -41,4 +41,16 @@
           AND DATE(create_time) = CURDATE()
     </select>
 
+    <select id="selectTrendPointsByStudent" resultType="com.edumind.util.EvaluationTrendPoint" parameterType="string">
+        SELECT
+            DATE_FORMAT(create_time, '%Y-%m-%d') AS date,
+        sentiment_score AS sentimentScore
+        FROM
+            student_evaluation
+        WHERE
+            student_id = #{studentId}
+        ORDER BY
+            create_time ASC
+    </select>
+
 </mapper>
