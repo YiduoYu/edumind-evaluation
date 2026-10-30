@@ -1,44 +1,44 @@
-# EduMind 学生心理自我评价系统
+# EduMind: Student Self-Evaluation and Early-Warning System
 
-EduMind 是一个基于 Spring Boot 构建的后端服务系统，旨在通过学生提交的自我评价内容，结合 AI 情感分析与心理学模型，辅助教师及时发现学生可能存在的心理健康问题。
+Summer internship project (2025).
 
----
+EduMind is a Spring Boot backend that helps teachers notice students who may be struggling. Students submit short self-evaluations; each one is classified by sentiment with the Baidu NLP API, and a student is flagged when two consecutive submissions are negative. Teachers can review the flagged list and each student's sentiment trend, plotted with ECharts.
 
-## 核心功能
+## Features
+- Self-evaluation submission with input validation
+- Sentiment classification (positive / neutral / negative, with confidence) via Baidu NLP
+- Early warning when two consecutive evaluations are negative
+- Per-student history and sentiment trend chart
+- Bulk import of student rosters from Excel (EasyExcel)
 
--  学生自我评价提交接口
--  NLP 情绪分析（待集成）
--  自动预警系统：若学生连续两次提交负面情绪，将标记为预警，通知教师
--  教师端查看学生评价与历史数据
--  MySQL 数据库存储结构清晰，支持按学生ID检索记录
-- Echarts 显示学生情绪波动图表
+## API
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/evaluation/submit` | Submit a self-evaluation |
+| `GET` | `/api/evaluation/recent/{studentId}` | Most recent evaluations |
+| `GET` | `/api/evaluation/all/{studentId}` | Full history |
+| `GET` | `/api/evaluation/trend/{studentId}` | Sentiment trend points |
+| `GET` | `/api/evaluation/warnings` | Students currently flagged |
+| `GET` | `/api/student/{id}` · `/api/student/all` | Student records |
+| `POST` | `/api/student/import` | Import students from Excel |
 
----
+## Running
+Requires JDK 8+, Maven, and MySQL.
+```bash
+export DB_USERNAME=root
+export DB_PASSWORD=your-mysql-password
+export BAIDU_APP_ID=...  BAIDU_API_KEY=...  BAIDU_SECRET_KEY=...
+mvn spring-boot:run
+```
+Create a MySQL database named `edumind` first. The server starts on port 8080, and the trend chart page is at `src/main/java/com/edumind/ui/index.html`.
 
-##  下一步目标
+## Tech stack
+Spring Boot 2.7 · MyBatis · MySQL · Baidu AI NLP SDK · EasyExcel · ECharts
 
-### 技术开发方向
+## Next steps
+- Email alerts to teachers (Spring Mail)
+- Replace the external API with a fine-tuned sentiment classifier
+- OpenAPI documentation
 
-
-1.**完善预警机制**：
-   - 邮件通知教师（可用 Spring Mail 实现）
-   - 在教师界面添加“预警学生列表”接口
-
-2.**完善前端或 API 文档说明**：
-   - 添加 Swagger 文档或 Postman / Apifox 在线文档
-   - 若需展示，可开发一个轻量级前端（可用 Vue3）
-
-3.**完善情绪分析模型使用**:
-   - 自己训练的文本分类模型（基于情感词典或 HuggingFace 模型微调）
-
----
-
-## 开发环境
-
-- JDK: 1.8（Amazon Corretto）
-- Spring Boot: 2.7
-- MySQL: 9.3.0
-- MyBatis: 2.2
-- Apifox（API 测试工具）
-- IDE: IntelliJ IDEA
-
+## License
+MIT
